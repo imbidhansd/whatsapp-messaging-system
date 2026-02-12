@@ -31,6 +31,31 @@ export const registerUser = createAsyncThunk(
     }
 );
 
+export const verifyOTP = createAsyncThunk(
+  'auth/verifyOTP',
+  async (otpData, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.verifyOTP(otpData);
+      return response.data;
+    } catch (err) {
+      console.error('API Error:', err); // এররটি প্রিন্ট করুন
+      return rejectWithValue(err.response?.data || 'Verification failed');
+    }
+  }
+);
+
+export const resendOTPAction = createAsyncThunk(
+    'auth/resendOTP',
+    async (emailData, { rejectWithValue }) => {
+      try {
+        const response = await authAPI.resendOTP(emailData);
+        return response.data;
+      } catch (err) {
+        return rejectWithValue(err.response?.data || 'Failed to resend OTP');
+      }
+    }
+);
+
 // Logout
 export const logoutUser = createAsyncThunk(
     'auth/logout',
@@ -91,12 +116,15 @@ const authSlice = createSlice({
         // Login
         .addCase(loginUser.pending, (state) => { state.loading = true; state.error = null; })
         .addCase(loginUser.fulfilled, (state, action) => {
-          state.loading = false;
-          state.user = action.payload.user;
-          state.token = action.payload.token;
-          // state.refreshToken = action.payload.refresh_token;
-          state.isAuthenticated = true;
-          state.error = null;
+          if (action.payload.needsVerification) {
+            state.loading = false;
+            state.isAuthenticated = false;
+          } else {
+            state.loading = false;
+            state.user = action.payload.user;
+            state.token = action.payload.token;
+            state.isAuthenticated = true;
+          }
         })
         .addCase(loginUser.rejected, (state, action) => {
           state.loading = false;
@@ -108,10 +136,10 @@ const authSlice = createSlice({
         .addCase(registerUser.pending, (state) => { state.loading = true; state.error = null; })
         .addCase(registerUser.fulfilled, (state, action) => {
           state.loading = false;
-          state.user = action.payload.user;
-          state.token = action.payload.token;
-          state.refreshToken = action.payload.refresh_token;
-          state.isAuthenticated = true;
+          // state.user = action.payload.user;
+          // state.token = action.payload.token;
+          // state.refreshToken = action.payload.refresh_token;
+          // state.isAuthenticated = true;
           state.error = null;
         })
         .addCase(registerUser.rejected, (state, action) => {
@@ -119,7 +147,18 @@ const authSlice = createSlice({
           state.error = action.payload;
           state.isAuthenticated = false;
         })
-
+        // Verify OTP Fulfilled
+        .addCase(verifyOTP.pending, (state) => { state.loading = true;})
+        .addCase(verifyOTP.fulfilled, (state, action) => {
+          state.loading = false;
+          // state.user = action.payload.user;
+          // state.token = action.payload.token;
+          // state.isAuthenticated = true;
+        })
+        .addCase(verifyOTP.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
         // Logout
         .addCase(logoutUser.fulfilled, (state) => {
           state.user = null;

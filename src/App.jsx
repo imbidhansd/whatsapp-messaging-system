@@ -7,6 +7,7 @@ import Chat from "./components/Chat/Chat";
 import socketService from "./socket/socket.js";
 import * as authAPI from "./api/auth.js";
 import { clearAuth, setUser } from "./store/slices/authSlice.js";
+import { Toaster } from "react-hot-toast";
 
 function AppRoutes() {
     const dispatch = useDispatch();
@@ -57,13 +58,13 @@ function AppRoutes() {
         };
     }, [user, isAuthenticated]);
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-400"></div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    //             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-400"></div>
+    //         </div>
+    //     );
+    // }
     return (
         <Routes>
             <Route
@@ -88,6 +89,7 @@ function App() {
                     v7_relativeSplatPath: true,
                 }}
             >
+                <Toaster position="top-right" toastOptions={{  style: { zIndex: 99999 }}} />
                 <AppRoutes />
             </BrowserRouter>
         </Provider>
