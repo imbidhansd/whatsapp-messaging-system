@@ -31,8 +31,11 @@ const Register = ({ onStepChange }) => {
 
     try {
       await dispatch(registerUser(submitData)).unwrap();
-      toast.success('Registration successful! Check your email for OTP.');
-      onStepChange('verify', formData.email);
+      toast.success('Registration successful!');
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+      // onStepChange('verify', formData.email);
     } catch (err) {
       const data = err?.response?.data || err;
       toast.error(data?.message || 'Registration failed');

@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
     async (userData, { rejectWithValue }) => {
       try {
         const response = await authAPI.register(userData);
-        localStorage.setItem('token', response.data.token);
+        // localStorage.setItem('token', response.data.token);
         // localStorage.setItem('refreshToken', response.data.refresh_token);
         return response.data;
       } catch (err) {

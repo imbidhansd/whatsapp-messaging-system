@@ -27,7 +27,7 @@ const Login = ({ onStepChange }) => {
       }
 
       toast.success('Login successful!');
-    } catch (err) {        
+    } catch (err) {
       const data = err?.response?.data || err;
       if (data?.needsVerification) {
         toast.error(data.message || 'Please verify your email first');
