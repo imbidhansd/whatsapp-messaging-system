@@ -315,11 +315,11 @@ const Chat = () => {
                 <span className="text-green-600 text-4xl font-bold">W</span>
               </div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                Welcome to WhatsApp Web
+                Welcome to Chatbd.live web
               </h2>
               <p className="text-gray-600 max-w-md">
                 Send and receive messages without keeping your phone online.
-                Use WhatsApp on up to 4 linked devices and 1 phone at the same time.
+                Use chatbd.live on up to 4 linked devices and 1 phone at the same time.
               </p>
             </div>
           </div>
